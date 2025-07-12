@@ -1,10 +1,4 @@
 import {
-  HttpErrorResponse,
-  provideHttpClient,
-  withFetch,
-  withInterceptors,
-} from '@angular/common/http';
-import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
@@ -17,13 +11,22 @@ import {
   withPreloading,
   withRouterConfig,
 } from '@angular/router';
-import { provideAppTitle } from '@app/common/seo/ui/title';
+import {
+  HttpErrorResponse,
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
+
+import { provideAngularSvgIcon } from 'angular-svg-icon';
 import {
   provideTanStackQuery,
   QueryClient,
   withDevtools,
 } from '@tanstack/angular-query-experimental';
-import { provideAngularSvgIcon } from 'angular-svg-icon';
+
+import { provideAppTitle } from '@app/common/seo/ui/title';
+import { provideNgxSkeletonLoader } from 'ngx-skeleton-loader';
 
 import { appRoutes } from './app.routes';
 
@@ -31,6 +34,12 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
+    provideNgxSkeletonLoader({
+      theme: {
+        extendsFromRoot: true,
+        height: '30px',
+      },
+    }),
     provideRouter(
       appRoutes,
       withComponentInputBinding(),
@@ -74,7 +83,7 @@ export const appConfig: ApplicationConfig = {
       }),
       withDevtools(),
     ),
-    provideAppTitle('My Angular App'),
 
+    provideAppTitle('My Angular App'),
   ],
 };
