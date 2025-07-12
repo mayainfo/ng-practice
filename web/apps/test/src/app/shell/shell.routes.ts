@@ -14,6 +14,13 @@ export const shellRoutes: Route[] = [
           ),
       },
       {
+        path: 'table',
+        loadComponent: () =>
+          import('../table-selection/table.component').then(
+            (m) => m.TableComponent,
+          ),
+      },
+      {
         path: ':productId',
         loadComponent: () =>
           import('../products/product-detail.component').then(

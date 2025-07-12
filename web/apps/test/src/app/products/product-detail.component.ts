@@ -9,7 +9,11 @@ import { RouterLink } from '@angular/router';
   selector: 'app-product-detail',
   template: `
     <div class="flex flex-col gap-4">
-      <a routerLink="..">返回上一頁</a>
+      <a
+        routerLink=".."
+        class="w-fit rounded-md border border-yellow-800 px-4 py-0.5 text-yellow-800 hover:bg-yellow-200"
+        >返回上一頁</a
+      >
       @if (productQueryById.isPending()) {
         <div class="grid grid-cols-2 gap-8">
           <ngx-skeleton-loader
