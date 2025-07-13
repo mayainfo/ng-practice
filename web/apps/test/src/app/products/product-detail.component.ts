@@ -9,7 +9,8 @@ import { CurrencyPipe, JsonPipe } from '@angular/common';
 import { ProductsQueryService } from './data-access/products.query';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { DeleteService } from '../shared/delete.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -21,11 +22,19 @@ import { RouterLink } from '@angular/router';
           class="w-fit rounded-md border border-yellow-800 px-4 py-0.5 text-yellow-800 hover:bg-yellow-200"
           >返回上一頁</a
         >
-        <a
-          routerLink="edit"
-          class="w-fit rounded-md border border-yellow-800 px-4 py-0.5 text-yellow-800 hover:bg-yellow-200"
-          >編輯</a
-        >
+        <div class="flex items-center gap-4">
+          <a
+            routerLink="edit"
+            class="w-fit rounded-md border border-yellow-800 px-4 py-0.5 text-yellow-800 hover:bg-yellow-200"
+            >編輯</a
+          >
+          <button
+            (click)="deleteProduct()"
+            class="w-fit rounded-md border border-red-500 px-4 py-0.5 text-red-500 hover:bg-red-200"
+          >
+            刪除
+          </button>
+        </div>
       </div>
       @if (productQueryById.isPending()) {
         <div class="grid grid-cols-2 gap-8">
@@ -97,6 +106,11 @@ import { RouterLink } from '@angular/router';
 })
 export class ProductDetailComponent {
   #productsQueryService = inject(ProductsQueryService);
+  #route = inject(ActivatedRoute);
+  #router = inject(Router);
+  #deleteService = inject(DeleteService);
+
+  deleteMutation = this.#productsQueryService.deleteMutation();
 
   productId = input.required({
     transform: numberAttribute,
@@ -105,4 +119,14 @@ export class ProductDetailComponent {
   productQueryById = injectQuery(() =>
     this.#productsQueryService.productQueryById(this.productId()),
   );
+
+  deleteProduct() {
+    this.#deleteService.show(() => {
+      this.deleteMutation.mutate(this.productId(), {
+        onSuccess: () => {
+          this.#router.navigate(['/']);
+        },
+      });
+    });
+  }
 }
