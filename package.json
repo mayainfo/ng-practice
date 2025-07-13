@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "pnpm exec nx serve app",
-    "start:test": "pnpm exec nx serve test"
+    "start": "pnpm exec nx serve app"
   },
   "private": true,
   "dependencies": {
@@ -20,8 +19,6 @@
     "@nx/devkit": "21.2.1",
     "@tanstack/angular-query-experimental": "^5.81.5",
     "angular-svg-icon": "^19.1.1",
-    "ngx-pagination": "^6.0.3",
-    "ngx-skeleton-loader": "^11.2.1",
     "ngx-sonner": "^3.1.0",
     "ngxtension": "^5.1.0",
     "rxjs": "~7.8.0",
