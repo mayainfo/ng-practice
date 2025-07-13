@@ -13,7 +13,6 @@ import { RouterLink, RouterOutlet } from '@angular/router';
     </div>
   `,
   styles: [],
-  standalone: true,
   imports: [RouterOutlet, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

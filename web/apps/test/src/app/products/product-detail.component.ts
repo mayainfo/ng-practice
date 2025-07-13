@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,12 +6,12 @@ import {
   input,
   numberAttribute,
 } from '@angular/core';
-import { CurrencyPipe, JsonPipe } from '@angular/common';
-import { ProductsQueryService } from './data-access/products.query';
+import { Router, RouterLink } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+
 import { DeleteService } from '../shared/delete.service';
+import { ProductsQueryService } from './data-access/products.query';
 
 @Component({
   selector: 'app-product-detail',
@@ -101,12 +102,11 @@ import { DeleteService } from '../shared/delete.service';
   `,
   styles: [],
   standalone: true,
-  imports: [CurrencyPipe, JsonPipe, NgxSkeletonLoaderComponent, RouterLink],
+  imports: [CurrencyPipe, NgxSkeletonLoaderComponent, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent {
   #productsQueryService = inject(ProductsQueryService);
-  #route = inject(ActivatedRoute);
   #router = inject(Router);
   #deleteService = inject(DeleteService);
 

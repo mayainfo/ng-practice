@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-error',
-  imports: [CommonModule],
+  imports: [],
   standalone: true,
   template: `
     <div class="flex w-full justify-center">

@@ -1,13 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  signal,
-} from '@angular/core';
-import { CurrencyPipe, JsonPipe, NgClass } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { CurrencyPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+
 import { Product } from './data-access/products.service';
 
 @Component({
@@ -40,16 +35,9 @@ import { Product } from './data-access/products.service';
   `,
   styles: [],
   standalone: true,
-  imports: [
-    CurrencyPipe,
-    RouterLink,
-    MatCheckbox,
-    NgClass,
-    FormsModule,
-    JsonPipe,
-  ],
+  imports: [CurrencyPipe, RouterLink, FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCardComponent {
-  product = input.required<Product>();
+  readonly product = input.required<Product>();
 }

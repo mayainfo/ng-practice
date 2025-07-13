@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { SvgIconComponent } from 'angular-svg-icon';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ButtonColor, ButtonComponent } from './button.component';
+import { SvgIconComponent } from 'angular-svg-icon';
+
+import { ButtonComponent } from './button.component';
 
 @Component({
   selector: 'app-page-not-found',
@@ -16,18 +17,12 @@ import { ButtonColor, ButtonComponent } from './button.component';
       <div class="aspect-square w-1/4">
         <svg-icon src="assets/404.svg"></svg-icon>
       </div>
-      <button
-        app-button
-        [color]="ButtonColor.Primary"
-        routerLink="/"
-        class="mt-6"
-      >
+      <button app-button color="primary" routerLink="/" class="mt-6">
         返回首頁
       </button>
     </div>
   `,
   styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PageNotFoundComponent {
-  protected readonly ButtonColor = ButtonColor;
-}
+export class PageNotFoundComponent {}

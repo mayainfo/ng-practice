@@ -1,7 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Params } from './products.query';
-import { combineLatest, firstValueFrom, forkJoin, map, of, timer } from 'rxjs';
+import { map } from 'rxjs';
+
 import { Category } from './categories.service';
 
 const baseUrl = 'https://api.escuelajs.co/api/v1/products';

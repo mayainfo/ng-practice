@@ -75,6 +75,5 @@ export const appConfig: ApplicationConfig = {
       withDevtools(),
     ),
     provideAppTitle('My Angular App'),
-
   ],
 };

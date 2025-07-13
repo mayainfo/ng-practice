@@ -1,19 +1,20 @@
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
   signal,
 } from '@angular/core';
-import { ProductCardComponent } from './product-card.component';
-import { ProductsQueryService } from './data-access/products.query';
-import { injectQuery } from '@tanstack/angular-query-experimental';
-import { NgClass } from '@angular/common';
-import { ProductCategoryQueryService } from './data-access/product-category.query';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
-import { ProductParamsService } from './product-params.service';
-import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { RouterLink } from '@angular/router';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+
+import { ProductCategoryQueryService } from './data-access/product-category.query';
+import { ProductsQueryService } from './data-access/products.query';
+import { ProductCardComponent } from './product-card.component';
+import { ProductParamsService } from './product-params.service';
 
 @Component({
   selector: 'app-products',

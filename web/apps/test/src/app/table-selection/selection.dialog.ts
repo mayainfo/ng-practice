@@ -175,7 +175,9 @@ class SelectionDialogComponent {
   readonly data = inject<SelectionDialogData>(MAT_DIALOG_DATA);
   readonly productsQueryService = inject(ProductsQueryService);
 
-  readonly productsQuery = injectQuery(() => this.productsQueryService.productsQuery());
+  readonly productsQuery = injectQuery(() =>
+    this.productsQueryService.productsQuery(),
+  );
 
   readonly displayedColumns = [
     'checkbox',
@@ -186,18 +188,21 @@ class SelectionDialogComponent {
   ];
 
   readonly selectedProducts = injectSelectionModel(
-    true, this.data.products, true, (a, b) => a.id === b.id,
-  )
-
-  readonly isAllSelected = computed(
-    () => {
-      const products = this.productsQuery.data()?.items ?? [];
-      if (products.length === 0) {
-        return false;
-      }
-      return products.every((product) => this.selectedProducts.isSelected(product)())
-    }
+    true,
+    this.data.products,
+    true,
+    (a, b) => a.id === b.id,
   );
+
+  readonly isAllSelected = computed(() => {
+    const products = this.productsQuery.data()?.items ?? [];
+    if (products.length === 0) {
+      return false;
+    }
+    return products.every((product) =>
+      this.selectedProducts.isSelected(product)(),
+    );
+  });
 
   submit() {
     this.#dialogRef.close({
@@ -207,11 +212,9 @@ class SelectionDialogComponent {
 
   toggleAll() {
     if (this.isAllSelected()) {
-      this.selectedProducts.clear()
+      this.selectedProducts.clear();
     } else {
-      this.selectedProducts.select(
-        ...(this.productsQuery.data()?.items ?? [])
-      )
+      this.selectedProducts.select(...(this.productsQuery.data()?.items ?? []));
     }
   }
 

@@ -1,8 +1,15 @@
 import {
+  HttpErrorResponse,
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
+import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import {
   PreloadAllModules,
   provideRouter,
@@ -11,31 +18,21 @@ import {
   withPreloading,
   withRouterConfig,
 } from '@angular/router';
-import {
-  HttpErrorResponse,
-  provideHttpClient,
-  withFetch,
-  withInterceptors,
-} from '@angular/common/http';
-
-import { provideAngularSvgIcon } from 'angular-svg-icon';
+import { provideAppTitle } from '@app/common/seo/ui/title';
 import {
   provideTanStackQuery,
   QueryClient,
   withDevtools,
 } from '@tanstack/angular-query-experimental';
-
-import { provideAppTitle } from '@app/common/seo/ui/title';
+import { provideAngularSvgIcon } from 'angular-svg-icon';
 import { provideNgxSkeletonLoader } from 'ngx-skeleton-loader';
 
 import { appRoutes } from './app.routes';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-
     provideRouter(
       appRoutes,
       withComponentInputBinding(),
@@ -52,6 +49,7 @@ export const appConfig: ApplicationConfig = {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline', subscriptSizing: 'dynamic' },
     },
+
     provideAngularSvgIcon(),
     provideTanStackQuery(
       new QueryClient({
@@ -88,6 +86,7 @@ export const appConfig: ApplicationConfig = {
         height: '30px',
       },
     }),
+
     provideAppTitle('示範網站'),
   ],
 };

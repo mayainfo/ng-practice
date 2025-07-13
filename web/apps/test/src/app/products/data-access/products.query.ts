@@ -5,15 +5,16 @@ import {
   QueryClient,
   queryOptions,
 } from '@tanstack/angular-query-experimental';
+import { toast } from 'ngx-sonner';
+import { firstValueFrom } from 'rxjs';
+
+import { handleErrorMessage } from '../../shared/error-handling';
+import { LoadingService } from '../../shared/loading.service';
 import {
   ProductCreateInput,
   ProductsService,
   ProductUpdateInput,
 } from './products.service';
-import { firstValueFrom } from 'rxjs';
-import { toast } from 'ngx-sonner';
-import { LoadingService } from '../../shared/loading.service';
-import { handleErrorMessage } from '../../shared/error-handling';
 
 export interface Params {
   categoryId?: number;
@@ -38,9 +39,9 @@ export class ProductsQueryService {
       queryFn: () =>
         firstValueFrom(
           this.#productService.getProducts({
-            categoryId: params?.categoryId,
-            pageSize: params?.pageSize,
             page: params?.page,
+            pageSize: params?.pageSize,
+            categoryId: params?.categoryId,
             priceMin: params?.priceMin,
             priceMax: params?.priceMax,
             title: params?.title,

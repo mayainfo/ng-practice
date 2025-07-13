@@ -1,10 +1,10 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -13,7 +13,8 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { SvgIconComponent } from 'angular-svg-icon';
-import { ButtonColor, ButtonComponent } from './button.component';
+
+import { ButtonComponent } from './button.component';
 
 @Component({
   selector: 'app-delete',
@@ -36,14 +37,8 @@ import { ButtonColor, ButtonComponent } from './button.component';
     </mat-dialog-content>
     <mat-dialog-actions align="center">
       <div class="flex gap-4">
-        <button app-button [color]="ButtonColor.Primary" mat-dialog-close>
-          取消
-        </button>
-        <button
-          app-button
-          [color]="ButtonColor.Delete"
-          (click)="closeDialog(true)"
-        >
+        <button app-button color="primary" mat-dialog-close>取消</button>
+        <button app-button color="delete" (click)="closeDialog(true)">
           刪除
         </button>
       </div>
@@ -61,6 +56,4 @@ export class DeleteComponent {
     this.isConfirmed.set(true);
     this.dialogRef.close(confirmed);
   }
-
-  protected readonly ButtonColor = ButtonColor;
 }
