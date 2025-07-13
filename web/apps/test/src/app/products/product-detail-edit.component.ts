@@ -91,6 +91,7 @@ import {
               type="number"
               placeholder="請輸入價格"
               formControlName="price"
+              min="0"
             />
             <mat-error *ngxControlError="form.controls.price; track: 'required'"
               >必填

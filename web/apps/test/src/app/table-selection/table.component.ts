@@ -95,7 +95,9 @@ export class TableComponent {
       width: '1000px',
       minWidth: '1000px',
       height: '600px',
-      data: this.records(),
+      data: {
+        products: this.records(),
+      },
       //   pass current data to dialog to edit
     });
 
@@ -103,7 +105,8 @@ export class TableComponent {
 
     if (data) {
       // get data from dialog and store the data in this component
-      this.records.update((oldData) => [...oldData, ...data.products]);
+      this.records.set([...data.products]);
+      // this.records.update((oldData) => [...oldData, ...data.products]);
     }
   }
 }

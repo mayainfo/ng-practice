@@ -24,6 +24,7 @@ import { ErrorComponent } from '../shared/error.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
+import { JsonPipe } from '@angular/common';
 
 export type SelectionDialogData = {
   products: Product[];
@@ -62,6 +63,7 @@ export class SelectionDialogService {
     ErrorComponent,
     MatTableModule,
     MatCheckbox,
+    JsonPipe,
   ],
   template: `
     <h2 mat-dialog-title>選擇商品</h2>

@@ -15,7 +15,7 @@ import { Product } from './data-access/products.service';
   template: `
     <a
       [routerLink]="product().id.toString()"
-      class="flex h-full flex-col gap-2 overflow-hidden rounded-md border border-yellow-900"
+      class="flex h-full flex-col gap-2 overflow-hidden rounded-md border border-yellow-900 transition-all duration-200 hover:bg-yellow-50"
     >
       <img
         class="aspect-[4/3] w-full bg-yellow-50"
