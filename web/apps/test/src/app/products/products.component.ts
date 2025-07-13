@@ -53,7 +53,7 @@ import { RouterLink } from '@angular/router';
         </div>
       </div>
       <a
-        routerLink="new"
+        routerLink="new/edit"
         class="rounded-md border border-yellow-950 px-4 py-0.5"
       >
         新增

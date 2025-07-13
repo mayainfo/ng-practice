@@ -49,23 +49,23 @@ import {
           </mat-error>
         </mat-form-field>
       </div>
-      <div class="flex items-center gap-4">
-        <mat-label>簡介</mat-label>
-        <mat-form-field class="w-full">
-          <input
-            matInput
-            type="text"
-            placeholder="請輸入產品名稱"
-            formControlName="slug"
-          />
-          <mat-error *ngxControlError="form.controls.slug; track: 'required'"
-            >必填
-          </mat-error>
-          <mat-error *ngxControlError="form.controls.slug; track: 'maxlength'"
-            >字數不得超過50字
-          </mat-error>
-        </mat-form-field>
-      </div>
+      <!--      <div class="flex items-center gap-4">-->
+      <!--        <mat-label>簡介</mat-label>-->
+      <!--        <mat-form-field class="w-full">-->
+      <!--          <input-->
+      <!--            matInput-->
+      <!--            type="text"-->
+      <!--            placeholder="請輸入產品名稱"-->
+      <!--            formControlName="slug"-->
+      <!--          />-->
+      <!--          <mat-error *ngxControlError="form.controls.slug; track: 'required'"-->
+      <!--            >必填-->
+      <!--          </mat-error>-->
+      <!--          <mat-error *ngxControlError="form.controls.slug; track: 'maxlength'"-->
+      <!--            >字數不得超過50字-->
+      <!--          </mat-error>-->
+      <!--        </mat-form-field>-->
+      <!--      </div>-->
       <div class="flex items-center gap-4">
         <mat-label>描述</mat-label>
         <mat-form-field class="w-full">
@@ -177,7 +177,7 @@ export class ProductDetailEditComponent {
       validators: [Validators.required],
     }),
     slug: this.#fb.control('', {
-      validators: [Validators.required, Validators.maxLength(50)],
+      validators: [],
     }),
     description: this.#fb.control('', {
       validators: [Validators.required],
@@ -206,6 +206,23 @@ export class ProductDetailEditComponent {
           price: data.price,
           category: data.category.id,
         });
+      });
+    });
+
+    effect(() => {
+      const isNew = this.isNew();
+      untracked(() => {
+        if (isNew) {
+          this.form.controls.title.enable();
+          this.form.controls.slug.enable();
+          this.form.controls.description.enable();
+          this.form.controls.price.enable();
+          this.form.controls.category.enable();
+        } else {
+          this.form.controls.slug.disable();
+          this.form.controls.description.disable();
+          this.form.controls.category.disable();
+        }
       });
     });
   }
@@ -240,7 +257,7 @@ export class ProductDetailEditComponent {
       this.form.getRawValue();
     const input: ProductCreateInput = {
       title: title.trim(),
-      slug: slug.trim(),
+      // slug: slug.trim(),
       description: description.trim(),
       price: price ?? 0,
       categoryId: category,
@@ -258,11 +275,11 @@ export class ProductDetailEditComponent {
       this.form.getRawValue();
     const input: ProductUpdateInput = {
       title: title.trim(),
-      slug: slug.trim(),
-      description: description.trim(),
+      // slug: slug.trim(),
+      // description: description.trim(),
       price: price ?? 0,
-      categoryId: category,
-      images: ['https://printler.com/en/poster/162394/'],
+      // categoryId: category,
+      // images: ['https://printler.com/en/poster/162394/'],
     };
     this.updateMutation.mutate(
       {

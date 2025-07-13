@@ -14,13 +14,6 @@ export const shellRoutes: Route[] = [
           ),
       },
       {
-        path: 'new',
-        loadComponent: () =>
-          import('../products/product-detail-edit.component').then(
-            (m) => m.ProductDetailEditComponent,
-          ),
-      },
-      {
         path: 'table',
         loadComponent: () =>
           import('../table-selection/table.component').then(

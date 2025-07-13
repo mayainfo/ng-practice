@@ -20,7 +20,7 @@ export interface Product {
 
 export interface ProductCreateInput {
   title: string;
-  slug: string;
+  // slug: string;
   price: number;
   description: string;
   categoryId: number;
@@ -30,10 +30,10 @@ export interface ProductCreateInput {
 export interface ProductUpdateInput {
   title?: string;
   price?: number;
-  slug?: string;
-  description?: string;
-  categoryId?: number;
-  images?: string[];
+  // slug?: string;
+  // description?: string;
+  // categoryId?: number;
+  // images?: string[];
 }
 
 export interface ProductQueryParams {
