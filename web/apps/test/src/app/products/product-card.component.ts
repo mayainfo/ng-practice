@@ -1,4 +1,9 @@
-import { Component, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  signal,
+} from '@angular/core';
 import { CurrencyPipe, JsonPipe, NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -43,6 +48,7 @@ import { Product } from './data-access/products.service';
     FormsModule,
     JsonPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCardComponent {
   product = input.required<Product>();

@@ -29,17 +29,13 @@ import { provideAppTitle } from '@app/common/seo/ui/title';
 import { provideNgxSkeletonLoader } from 'ngx-skeleton-loader';
 
 import { appRoutes } from './app.routes';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideNgxSkeletonLoader({
-      theme: {
-        extendsFromRoot: true,
-        height: '30px',
-      },
-    }),
+
     provideRouter(
       appRoutes,
       withComponentInputBinding(),
@@ -52,7 +48,10 @@ export const appConfig: ApplicationConfig = {
       }),
     ),
     provideHttpClient(withFetch(), withInterceptors([])),
-
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline', subscriptSizing: 'dynamic' },
+    },
     provideAngularSvgIcon(),
     provideTanStackQuery(
       new QueryClient({
@@ -83,7 +82,12 @@ export const appConfig: ApplicationConfig = {
       }),
       withDevtools(),
     ),
-
+    provideNgxSkeletonLoader({
+      theme: {
+        extendsFromRoot: true,
+        height: '30px',
+      },
+    }),
     provideAppTitle('My Angular App'),
   ],
 };

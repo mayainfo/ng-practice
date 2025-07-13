@@ -1,14 +1,19 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { ProductCardComponent } from './product-card.component';
 import { ProductsQueryService } from './data-access/products.query';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { NgClass } from '@angular/common';
 import { ProductCategoryQueryService } from './data-access/product-category.query';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { MatCheckbox } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { ProductParamsService } from './product-params.service';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -47,9 +52,12 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
           </button>
         </div>
       </div>
-      <!--      <button class="rounded-md border border-yellow-950 px-4 py-0.5">-->
-      <!--        新增-->
-      <!--      </button>-->
+      <a
+        routerLink="new"
+        class="rounded-md border border-yellow-950 px-4 py-0.5"
+      >
+        新增
+      </a>
     </div>
     <div class="mt-4 grid grid-cols-[14rem_auto] gap-8">
       <div class="flex flex-col gap-2">
@@ -173,7 +181,9 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
     NgxPaginationModule,
     FormsModule,
     NgxSkeletonLoaderComponent,
+    RouterLink,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsComponent {
   productsQueryService = inject(ProductsQueryService);

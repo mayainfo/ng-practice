@@ -3,6 +3,45 @@
 @tailwind utilities;
 
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+    --mat-form-field-container-vertical-padding: 6px;
+    --mat-form-field-container-height:32px;
+    --mat-table-background-color: transparent !important;
+
+    --primary: #000000;
+    --secondary: #C1272D;
+    --tertiary: #fff;
+    --other: #F2EADF;
+
+    --info: #6CA0DC;
+    --success: #75C38B;
+    --warning: #E6B655;
+    --danger: #D85C5A;
+}
+
+/* For remove mat-form-field outline-appearance border bug */
+.mdc-text-field--outlined:not(
+    .mdc-text-field--disabled
+  ).mdc-text-field--focused,
+.mdc-notched-outline__notch {
+    border-right: none !important;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled),
+.mdc-notched-outline__notch {
+    border-right: none !important;
+}
+
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field
+.mdc-notched-outline__notch {
+    border-left: transparent !important;
+}
+
+/*.mat-mdc-tab .mdc-tab-indicator__content--underline {*/
+/*    border-color: var(--secondary) !important;*/
+/*}*/
+
 /* ngx-pagination */
 .ngx-pagination .current {
     padding: 0.1875rem 0.625rem;

@@ -1,4 +1,10 @@
-import { Component, inject, input, numberAttribute } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  numberAttribute,
+} from '@angular/core';
 import { CurrencyPipe, JsonPipe } from '@angular/common';
 import { ProductsQueryService } from './data-access/products.query';
 import { injectQuery } from '@tanstack/angular-query-experimental';
@@ -9,11 +15,18 @@ import { RouterLink } from '@angular/router';
   selector: 'app-product-detail',
   template: `
     <div class="flex flex-col gap-4">
-      <a
-        routerLink=".."
-        class="w-fit rounded-md border border-yellow-800 px-4 py-0.5 text-yellow-800 hover:bg-yellow-200"
-        >返回上一頁</a
-      >
+      <div class="flex items-center justify-between">
+        <a
+          routerLink=".."
+          class="w-fit rounded-md border border-yellow-800 px-4 py-0.5 text-yellow-800 hover:bg-yellow-200"
+          >返回上一頁</a
+        >
+        <a
+          routerLink="edit"
+          class="w-fit rounded-md border border-yellow-800 px-4 py-0.5 text-yellow-800 hover:bg-yellow-200"
+          >編輯</a
+        >
+      </div>
       @if (productQueryById.isPending()) {
         <div class="grid grid-cols-2 gap-8">
           <ngx-skeleton-loader
@@ -48,11 +61,15 @@ import { RouterLink } from '@angular/router';
       } @else {
         @if (productQueryById.data(); as product) {
           <div class="grid grid-cols-2 gap-8">
-            <img
-              [src]="product.images[0]"
-              class="aspect-[4/3] w-full rounded-md"
-              alt=""
-            />
+            @if (product.images[0]) {
+              <img
+                [src]="product.images[0]"
+                class="aspect-[4/3] w-full rounded-md"
+                alt=""
+              />
+            } @else {
+              <div class="aspect-[4/3] w-full rounded-md bg-gray-200"></div>
+            }
             <div class="flex flex-col gap-2">
               <p class="text-lg font-bold">{{ product.title }}</p>
               <div
@@ -76,6 +93,7 @@ import { RouterLink } from '@angular/router';
   styles: [],
   standalone: true,
   imports: [CurrencyPipe, JsonPipe, NgxSkeletonLoaderComponent, RouterLink],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent {
   #productsQueryService = inject(ProductsQueryService);

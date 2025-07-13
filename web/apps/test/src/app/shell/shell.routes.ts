@@ -14,17 +14,40 @@ export const shellRoutes: Route[] = [
           ),
       },
       {
+        path: 'new',
+        loadComponent: () =>
+          import('../products/product-detail-edit.component').then(
+            (m) => m.ProductDetailEditComponent,
+          ),
+      },
+      {
         path: 'table',
         loadComponent: () =>
           import('../table-selection/table.component').then(
             (m) => m.TableComponent,
           ),
       },
+
       {
         path: ':productId',
         loadComponent: () =>
           import('../products/product-detail.component').then(
             (m) => m.ProductDetailComponent,
+          ),
+      },
+
+      {
+        path: ':productId/edit',
+        loadComponent: () =>
+          import('../products/product-detail-edit.component').then(
+            (m) => m.ProductDetailEditComponent,
+          ),
+      },
+      {
+        path: '**',
+        loadComponent: () =>
+          import('../shared/page-not-found.component').then(
+            (m) => m.PageNotFoundComponent,
           ),
       },
     ],
