@@ -32,18 +32,18 @@ export class ProductsQueryService {
   #qc = inject(QueryClient);
   #loadingService = inject(LoadingService);
 
-  productsQuery = (params: Params) =>
+  productsQuery = (params?: Params) =>
     queryOptions({
       queryKey: ['products', 'list', params],
       queryFn: () =>
         firstValueFrom(
           this.#productService.getProducts({
-            categoryId: params.categoryId,
-            pageSize: params.pageSize,
-            page: params.page,
-            priceMin: params.priceMin,
-            priceMax: params.priceMax,
-            title: params.title,
+            categoryId: params?.categoryId,
+            pageSize: params?.pageSize,
+            page: params?.page,
+            priceMin: params?.priceMin,
+            priceMax: params?.priceMax,
+            title: params?.title,
           }),
         ),
       placeholderData: keepPreviousData,
