@@ -1,30 +1,27 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
   Injectable,
-  model,
-  signal,
 } from '@angular/core';
+import { MatCheckbox } from '@angular/material/checkbox';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { firstValueFrom } from 'rxjs';
-import { Product } from '../products/data-access/products.service';
-import { ProductsQueryService } from '../products/data-access/products.query';
+import { MatTableModule } from '@angular/material/table';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
-import { ProductCardComponent } from '../products/product-card.component';
-import { LoadingComponent } from '../shared/loading.component';
+import { firstValueFrom } from 'rxjs';
+
+import { ProductsQueryService } from '../products/data-access/products.query';
+import { Product } from '../products/data-access/products.service';
 import { ErrorComponent } from '../shared/error.component';
-import { MatTableModule } from '@angular/material/table';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { SelectionModel } from '@angular/cdk/collections';
-import { JsonPipe } from '@angular/common';
+import { LoadingComponent } from '../shared/loading.component';
+import { injectSelectionModel } from '@app/common/signal/ui/selection-model';
 
 export type SelectionDialogData = {
   products: Product[];
@@ -45,8 +42,8 @@ export class SelectionDialogService {
       SelectionDialogResult
     >(SelectionDialogComponent, {
       data,
-      width: '60%',
-      height: '40rem',
+      width: '60%', // TODO: clamp(min, desired, max)
+      height: '40rem', //TODO: remove this
     });
     return firstValueFrom(dialogRef.afterClosed());
   }
@@ -57,13 +54,10 @@ export class SelectionDialogService {
   imports: [
     MatDialogModule,
     NgxPaginationModule,
-    NgxSkeletonLoaderComponent,
-    ProductCardComponent,
     LoadingComponent,
     ErrorComponent,
     MatTableModule,
     MatCheckbox,
-    JsonPipe,
   ],
   template: `
     <h2 mat-dialog-title>選擇商品</h2>
@@ -72,7 +66,7 @@ export class SelectionDialogService {
       @if (productsQuery.isPending()) {
         <app-loading />
       } @else if (productsQuery.isError()) {
-        <app-error [error]="productsQuery.isError()" />
+        <app-error [error]="productsQuery.error()" />
       } @else {
         @if (productsQuery.data(); as data) {
           <mat-table
@@ -82,7 +76,7 @@ export class SelectionDialogService {
                   : {
                       id: 'paginate',
                       itemsPerPage: data.pageSize,
-                      currentPage: 1,
+                      currentPage: data.page,
                       totalItems: data.total,
                     }
             "
@@ -96,7 +90,7 @@ export class SelectionDialogService {
               /></mat-header-cell>
               <mat-cell *matCellDef="let element">
                 <mat-checkbox
-                  [checked]="selectedProducts().isSelected(element)"
+                  [checked]="selectedProducts.isSelected(element)()"
                   (change)="toggleProduct(element)"
                 ></mat-checkbox>
               </mat-cell>
@@ -172,17 +166,18 @@ export class SelectionDialogService {
     }
   `,
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectionDialogComponent {
+class SelectionDialogComponent {
   readonly #dialogRef = inject(
     MatDialogRef<SelectionDialogComponent, SelectionDialogResult>,
   );
   readonly data = inject<SelectionDialogData>(MAT_DIALOG_DATA);
-  productsQueryService = inject(ProductsQueryService);
+  readonly productsQueryService = inject(ProductsQueryService);
 
-  productsQuery = injectQuery(() => this.productsQueryService.productsQuery());
+  readonly productsQuery = injectQuery(() => this.productsQueryService.productsQuery());
 
-  displayedColumns: string[] = [
+  readonly displayedColumns = [
     'checkbox',
     'title',
     'category',
@@ -190,53 +185,37 @@ export class SelectionDialogComponent {
     'price',
   ];
 
-  checked = model.required<boolean>();
+  readonly selectedProducts = injectSelectionModel(
+    true, this.data.products, true, (a, b) => a.id === b.id,
+  )
 
-  readonly selectedProducts = signal(
-    new SelectionModel(true, this.data.products, true, (a, b) => a.id === b.id),
-    {
-      equal: () => false,
-    },
-  );
   readonly isAllSelected = computed(
-    () =>
-      this.productsQuery
-        .data()
-        ?.items.every((product) =>
-          this.selectedProducts().isSelected(product),
-        ) || false,
+    () => {
+      const products = this.productsQuery.data()?.items ?? [];
+      if (products.length === 0) {
+        return false;
+      }
+      return products.every((product) => this.selectedProducts.isSelected(product)())
+    }
   );
 
   submit() {
     this.#dialogRef.close({
-      products: this.selectedProducts().selected,
+      products: this.selectedProducts.selected(),
     });
   }
 
   toggleAll() {
     if (this.isAllSelected()) {
-      this.selectedProducts.update((selectionModel) => {
-        selectionModel.clear();
-        return selectionModel;
-      });
+      this.selectedProducts.clear()
     } else {
-      this.selectedProducts.update((selectionModel) => {
-        this.productsQuery.data()?.items.forEach((product) => {
-          selectionModel.select(product);
-        });
-        return selectionModel;
-      });
+      this.selectedProducts.select(
+        ...(this.productsQuery.data()?.items ?? [])
+      )
     }
   }
 
   toggleProduct(product: Product) {
-    this.selectedProducts.update((selectionModel) => {
-      if (selectionModel.isSelected(product)) {
-        selectionModel.deselect(product);
-      } else {
-        selectionModel.select(product);
-      }
-      return selectionModel;
-    });
+    this.selectedProducts.toggle(product);
   }
 }

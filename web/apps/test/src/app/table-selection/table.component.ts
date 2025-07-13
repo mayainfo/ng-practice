@@ -1,9 +1,13 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { SelectionDialogComponent } from './selection.dialog';
-import { MatDialog } from '@angular/material/dialog';
-import { firstValueFrom } from 'rxjs';
+
 import { Product } from '../products/data-access/products.service';
+import { SelectionDialogService } from './selection.dialog';
 
 @Component({
   selector: 'app-table',
@@ -18,9 +22,9 @@ import { Product } from '../products/data-access/products.service';
           選擇商品
         </button>
       </div>
-      @if (records().length !== 0) {
+      @if (products().length !== 0) {
         <div class="rounded-md border border-yellow-800 p-4">
-          <mat-table [dataSource]="records()" #table="matTable">
+          <mat-table [dataSource]="products()" #table="matTable">
             <ng-container matColumnDef="title">
               <mat-header-cell *matHeaderCellDef>產品名稱</mat-header-cell>
               <mat-cell *matCellDef="let element">
@@ -32,9 +36,9 @@ import { Product } from '../products/data-access/products.service';
 
             <ng-container matColumnDef="category">
               <mat-header-cell *matHeaderCellDef>分類</mat-header-cell>
-              <mat-cell *matCellDef="let element">{{
-                element.category.name
-              }}</mat-cell>
+              <mat-cell *matCellDef="let element"
+                >{{ element.category.name }}
+              </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="description">
@@ -81,32 +85,23 @@ import { Product } from '../products/data-access/products.service';
     }
   `,
   standalone: true,
-  imports: [MatTableModule],
+  imports: [MatTableModule], //TODO: typed table
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent {
-  #dialog = inject(MatDialog);
+  readonly #selectionDialogService = inject(SelectionDialogService);
 
-  displayedColumns: string[] = ['title', 'category', 'description', 'price'];
+  readonly displayedColumns = ['title', 'category', 'description', 'price'];
 
-  records = signal<Product[]>([]);
+  readonly products = signal<Product[]>([]);
 
   async chooseProduct() {
-    const dialogRef = this.#dialog.open(SelectionDialogComponent, {
-      width: '1000px',
-      minWidth: '1000px',
-      height: '600px',
-      data: {
-        products: this.records(),
-      },
-      //   pass current data to dialog to edit
+    const result = await this.#selectionDialogService.open({
+      products: this.products(),
     });
-
-    const data = await firstValueFrom(dialogRef.afterClosed());
-
-    if (data) {
+    if (result) {
       // get data from dialog and store the data in this component
-      this.records.set([...data.products]);
-      // this.records.update((oldData) => [...oldData, ...data.products]);
+      this.products.set([...result.products]);
     }
   }
 }
