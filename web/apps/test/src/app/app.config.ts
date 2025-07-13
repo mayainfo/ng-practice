@@ -88,6 +88,6 @@ export const appConfig: ApplicationConfig = {
         height: '30px',
       },
     }),
-    provideAppTitle('My Angular App'),
+    provideAppTitle('示範網站'),
   ],
 };
