@@ -124,7 +124,7 @@ import {
         <button
           class="rounded-md border border-yellow-800 bg-yellow-200 px-4 py-0.5 hover:bg-yellow-400"
         >
-          更新
+          {{ isNew() ? '新增' : '更新' }}
         </button>
         <a
           routerLink=".."
