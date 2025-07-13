@@ -4,7 +4,6 @@
   "license": "MIT",
   "scripts": {
     "start": "pnpm exec nx serve app",
-    "start:test": "pnpm exec nx serve test"
   },
   "private": true,
   "dependencies": {

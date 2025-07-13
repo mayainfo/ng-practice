@@ -9,6 +9,7 @@ import {
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import {
   PreloadAllModules,
   provideRouter,
@@ -24,6 +25,7 @@ import {
   withDevtools,
 } from '@tanstack/angular-query-experimental';
 import { provideAngularSvgIcon } from 'angular-svg-icon';
+import { provideNgxSkeletonLoader } from 'ngx-skeleton-loader';
 
 import { appRoutes } from './app.routes';
 
@@ -43,6 +45,10 @@ export const appConfig: ApplicationConfig = {
       }),
     ),
     provideHttpClient(withFetch(), withInterceptors([])),
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline', subscriptSizing: 'dynamic' },
+    },
 
     provideAngularSvgIcon(),
     provideTanStackQuery(
@@ -74,6 +80,13 @@ export const appConfig: ApplicationConfig = {
       }),
       withDevtools(),
     ),
-    provideAppTitle('My Angular App'),
+    provideNgxSkeletonLoader({
+      theme: {
+        extendsFromRoot: true,
+        height: '30px',
+      },
+    }),
+
+    provideAppTitle('示範網站'),
   ],
 };
