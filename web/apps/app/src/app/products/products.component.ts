@@ -10,7 +10,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
-
 import { ProductCategoryQueryService } from './data-access/product-category.query';
 import { ProductsQueryService } from './data-access/products.query';
 import { ProductCardComponent } from './product-card.component';
@@ -183,7 +182,6 @@ import { ProductParamsService } from './product-params.service';
     FormsModule,
     NgxSkeletonLoaderComponent,
     RouterLink,
-    RouterLinkActive,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

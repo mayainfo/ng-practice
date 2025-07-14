@@ -27,6 +27,7 @@ import {
   ProductCreateInput,
   ProductUpdateInput,
 } from './data-access/products.service';
+import { injectInitialQuery } from '../../../../../libs/common/signal/ui/query/src/lib/inject-initial-query';
 
 @Component({
   selector: 'app-product-detail',
@@ -158,7 +159,7 @@ export class ProductDetailEditComponent {
   #router = inject(Router);
   #route = inject(ActivatedRoute);
 
-  productQuery = injectQuery(() =>
+  productQuery = injectInitialQuery(() =>
     this.#productsQueryService.productQueryById(this.existProductId()),
   );
   productCategoriesQuery = injectQuery(() =>
@@ -194,18 +195,18 @@ export class ProductDetailEditComponent {
       if (this.isNew()) {
         return;
       }
-      const data = this.productQuery.data();
-      if (!data) {
+      const product = this.productQuery.data();
+      if (!product) {
         return;
       }
 
       untracked(() => {
         this.form.setValue({
-          title: data.title,
-          slug: data.slug,
-          description: data.description,
-          price: data.price,
-          category: data.category.id,
+          title: product.title,
+          slug: product.slug,
+          description: product.description,
+          price: product.price,
+          category: product.category.id,
         });
       });
     });
