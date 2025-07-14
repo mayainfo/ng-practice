@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  linkedSignal,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -201,7 +202,7 @@ export class ProductsComponent {
   pageSizeParams = this.#productParamsService.pageSizeParams;
   search = this.#productParamsService.search;
 
-  searchInput = signal('');
+  searchInput = linkedSignal(this.search);
 
   productsQuery = injectQuery(() =>
     this.productsQueryService.productsQuery({
