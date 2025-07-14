@@ -8,26 +8,25 @@ import {
   numberAttribute,
   untracked,
 } from '@angular/core';
-import { CurrencyPipe, JsonPipe } from '@angular/common';
-import { ProductsQueryService } from './data-access/products.query';
-import { injectQuery } from '@tanstack/angular-query-experimental';
-import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
 import { MatInput } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { injectInitialQuery } from '@app/common/signal/ui/query';
+import { injectQuery } from '@tanstack/angular-query-experimental';
 import { NgxControlError } from 'ngxtension/control-error';
+
 import { ProductCategoryQueryService } from './data-access/product-category.query';
+import { ProductsQueryService } from './data-access/products.query';
 import {
   ProductCreateInput,
   ProductUpdateInput,
 } from './data-access/products.service';
-import { injectInitialQuery } from '../../../../../libs/common/signal/ui/query/src/lib/inject-initial-query';
 
 @Component({
   selector: 'app-product-detail',
@@ -112,9 +111,9 @@ import { injectInitialQuery } from '../../../../../libs/common/signal/ui/query/s
               } @else {
                 @if (productCategoriesQuery.data(); as categories) {
                   @for (category of categories; track category.id) {
-                    <mat-option [value]="category.id">{{
-                      category.name
-                    }}</mat-option>
+                    <mat-option [value]="category.id"
+                      >{{ category.name }}
+                    </mat-option>
                   }
                 }
               }
