@@ -13,7 +13,7 @@ import { Product } from './data-access/products.service';
       class="flex h-full flex-col gap-2 overflow-hidden rounded-md border border-yellow-900 transition-all duration-200 hover:bg-yellow-50"
     >
       <img
-        class="aspect-[4/3] w-full bg-yellow-50"
+        class="aspect-square w-full bg-yellow-50"
         [src]="product().images[0]"
         alt=""
       />

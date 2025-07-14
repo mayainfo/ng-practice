@@ -61,6 +61,14 @@ import { SelectionDialogService } from './selection.dialog';
             <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
           </mat-table>
         </div>
+        <div class="flex items-center justify-end">
+          <button
+            (click)="submit()"
+            class="rounded-md border border-yellow-800 bg-yellow-200 px-4 py-0.5 hover:bg-yellow-400"
+          >
+            送出
+          </button>
+        </div>
       } @else {
         <p class="text-gray-500">尚未選擇商品</p>
       }
@@ -103,5 +111,9 @@ export class TableComponent {
       // get data from dialog and store the data in this component
       this.products.set([...result.products]);
     }
+  }
+
+  submit() {
+    alert(JSON.stringify([...this.products()]));
   }
 }

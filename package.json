@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "pnpm exec nx serve app",
+    "start": "pnpm exec nx serve app"
   },
   "private": true,
   "dependencies": {

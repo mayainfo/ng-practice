@@ -40,7 +40,7 @@ import { ProductsQueryService } from './data-access/products.query';
       @if (productQueryById.isPending()) {
         <div class="grid grid-cols-2 gap-8">
           <ngx-skeleton-loader
-            class="aspect-[4/3] w-full rounded-md"
+            class="aspect-square w-full rounded-md"
             [theme]="{ extendsFromRoot: true, height: '100%' }"
           ></ngx-skeleton-loader>
           <div class="flex flex-col gap-6">
@@ -74,7 +74,7 @@ import { ProductsQueryService } from './data-access/products.query';
             @if (product.images[0]) {
               <img
                 [src]="product.images[0]"
-                class="aspect-[4/3] w-full rounded-md"
+                class="aspect-square w-full rounded-md"
                 alt=""
               />
             } @else {

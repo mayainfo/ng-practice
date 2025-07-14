@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
@@ -74,7 +74,7 @@ import { ProductParamsService } from './product-params.service';
                 class="w-full rounded-md px-4 py-0.5 text-start"
                 (click)="clearParams(); categoryParams.set(undefined)"
                 [ngClass]="{
-                  'bg-yellow-200': undefined === categoryParams(),
+                  'bg-yellow-200': !categoryParams(),
                 }"
               >
                 全部
@@ -126,7 +126,7 @@ import { ProductParamsService } from './product-params.service';
 
       <div class="flex flex-col gap-4">
         @if (productsQuery.isPending()) {
-          <div class="grid grid-cols-5 gap-4">
+          <div class="grid grid-cols-5 gap-4 overflow-y-auto">
             @for (skeleton of [].constructor(10); track skeleton) {
               <ngx-skeleton-loader
                 count="1"
@@ -183,6 +183,7 @@ import { ProductParamsService } from './product-params.service';
     FormsModule,
     NgxSkeletonLoaderComponent,
     RouterLink,
+    RouterLinkActive,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
