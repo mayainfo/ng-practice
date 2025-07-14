@@ -54,6 +54,7 @@ export class ProductsQueryService {
     queryOptions({
       queryKey: ['products', 'detail', productId],
       queryFn: () => firstValueFrom(this.#productService.getProduct(productId)),
+      enabled: !!productId,
     });
 
   createMutation = () =>
