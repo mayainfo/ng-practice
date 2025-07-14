@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { take } from 'rxjs';
+import { firstValueFrom, take } from 'rxjs';
 
 import { DeleteComponent } from './delete.component';
 
@@ -10,20 +10,17 @@ import { DeleteComponent } from './delete.component';
 export class DeleteService {
   #dialog = inject(MatDialog);
 
-  show(callback: () => void) {
-    const dialogRef = this.#dialog.open(DeleteComponent, {
-      width: '20rem',
-      height: '20rem',
-      disableClose: true,
-    });
+  async show() {
+    const dialogRef = this.#dialog.open<DeleteComponent, undefined, boolean>(
+      DeleteComponent,
+      {
+        width: '20rem',
+        height: '20rem',
+        disableClose: true,
+      },
+    );
 
-    dialogRef
-      .afterClosed()
-      .pipe(take(1))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          callback();
-        }
-      });
+    const confirmed = await firstValueFrom(dialogRef.afterClosed());
+    return !!confirmed;
   }
 }

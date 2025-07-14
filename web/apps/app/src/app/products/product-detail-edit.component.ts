@@ -24,9 +24,12 @@ import { NgxControlError } from 'ngxtension/control-error';
 import { ProductCategoryQueryService } from './data-access/product-category.query';
 import { ProductsQueryService } from './data-access/products.query';
 import {
+  Product,
   ProductCreateInput,
   ProductUpdateInput,
 } from './data-access/products.service';
+import { LoadingComponent } from '../shared/loading.component';
+import { ErrorComponent } from '../shared/error.component';
 
 @Component({
   selector: 'app-product-detail',
@@ -105,9 +108,9 @@ import {
           <mat-form-field class="w-full">
             <mat-select formControlName="category">
               @if (productCategoriesQuery.isPending()) {
-                loading
+                <app-loading />
               } @else if (productCategoriesQuery.isError()) {
-                error
+                <app-error [error]="productCategoriesQuery.isError()" />
               } @else {
                 @if (productCategoriesQuery.data(); as categories) {
                   @for (category of categories; track category.id) {
@@ -148,6 +151,8 @@ import {
     MatInput,
     RouterLink,
     NgxControlError,
+    LoadingComponent,
+    ErrorComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -191,22 +196,13 @@ export class ProductDetailEditComponent {
 
   constructor() {
     effect(() => {
-      if (this.isNew()) {
-        return;
-      }
       const product = this.productQuery.data();
       if (!product) {
         return;
       }
 
       untracked(() => {
-        this.form.setValue({
-          title: product.title,
-          slug: product.slug,
-          description: product.description,
-          price: product.price,
-          category: product.category.id,
-        });
+        this.#initForm(product);
       });
     });
 
@@ -225,6 +221,16 @@ export class ProductDetailEditComponent {
           this.form.controls.category.disable();
         }
       });
+    });
+  }
+
+  #initForm(product: Product) {
+    this.form.setValue({
+      title: product.title,
+      slug: product.slug,
+      description: product.description,
+      price: product.price,
+      category: product.category.id,
     });
   }
 
@@ -265,8 +271,8 @@ export class ProductDetailEditComponent {
       images: ['https://printler.com/en/poster/162394/'],
     };
     this.createMutation.mutate(input, {
-      onSuccess: () => {
-        this.#router.navigate(['..'], { relativeTo: this.#route });
+      onSuccess: (id) => {
+        this.#router.navigate(['../..', id], { relativeTo: this.#route });
       },
     });
   }

@@ -12,6 +12,7 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 
 import { DeleteService } from '../shared/delete.service';
 import { ProductsQueryService } from './data-access/products.query';
+import { ErrorComponent } from '../shared/error.component';
 
 @Component({
   selector: 'app-product-detail',
@@ -67,7 +68,7 @@ import { ProductsQueryService } from './data-access/products.query';
           </div>
         </div>
       } @else if (productQueryById.isError()) {
-        error
+        <app-error [error]="productQueryById.error()" />
       } @else {
         @if (productQueryById.data(); as product) {
           <div class="grid grid-cols-2 gap-8">
@@ -102,7 +103,12 @@ import { ProductsQueryService } from './data-access/products.query';
   `,
   styles: [],
   standalone: true,
-  imports: [CurrencyPipe, NgxSkeletonLoaderComponent, RouterLink],
+  imports: [
+    CurrencyPipe,
+    NgxSkeletonLoaderComponent,
+    RouterLink,
+    ErrorComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent {
@@ -120,13 +126,14 @@ export class ProductDetailComponent {
     this.#productsQueryService.productQueryById(this.productId()),
   );
 
-  deleteProduct() {
-    this.#deleteService.show(() => {
+  async deleteProduct() {
+    const confirmed = await this.#deleteService.show();
+    if (confirmed) {
       this.deleteMutation.mutate(this.productId(), {
         onSuccess: () => {
           this.#router.navigate(['/']);
         },
       });
-    });
+    }
   }
 }

@@ -34,7 +34,7 @@ export class ProductParamsService {
     parse: (value) => {
       return value ?? '';
     },
-    stringify: (value) => value,
+    stringify: (value) => value || undefined,
     queryParamsHandling: 'merge',
   });
 }

@@ -12,8 +12,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { ProductCategoryQueryService } from './data-access/product-category.query';
 import { ProductsQueryService } from './data-access/products.query';
-import { ProductCardComponent } from './product-card.component';
+import { ProductCardComponent } from './ui/product-card.component';
 import { ProductParamsService } from './product-params.service';
+import { ErrorComponent } from '../shared/error.component';
 
 @Component({
   selector: 'app-products',
@@ -137,7 +138,7 @@ import { ProductParamsService } from './product-params.service';
             }
           </div>
         } @else if (productsQuery.isError()) {
-          error
+          <app-error [error]="productsQuery.error()" />
         } @else {
           @if (productsQuery.data(); as data) {
             <div class="grid grid-cols-5 gap-4">
@@ -152,7 +153,9 @@ import { ProductParamsService } from './product-params.service';
                       };
                 track product.id
               ) {
-                <app-product-card [product]="product"></app-product-card>
+                <a [routerLink]="product.id.toString()">
+                  <app-product-card [product]="product"></app-product-card>
+                </a>
               }
             </div>
             @if (data.items.length === 0) {
@@ -182,6 +185,7 @@ import { ProductParamsService } from './product-params.service';
     FormsModule,
     NgxSkeletonLoaderComponent,
     RouterLink,
+    ErrorComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -3,13 +3,12 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
-import { Product } from './data-access/products.service';
+import { Product } from '../data-access/products.service';
 
 @Component({
   selector: 'app-product-card',
   template: `
-    <a
-      [routerLink]="product().id.toString()"
+    <div
       class="flex h-full flex-col gap-2 overflow-hidden rounded-md border border-yellow-900 transition-all duration-200 hover:bg-yellow-50"
     >
       <img
@@ -31,7 +30,7 @@ import { Product } from './data-access/products.service';
 
         <p class="text-red-500">{{ product().price | currency }}</p>
       </div>
-    </a>
+    </div>
   `,
   styles: [],
   standalone: true,

@@ -42,8 +42,7 @@ export class SelectionDialogService {
       SelectionDialogResult
     >(SelectionDialogComponent, {
       data,
-      width: '60%', // TODO: clamp(min, desired, max)
-      height: '40rem', //TODO: remove this
+      width: 'clamp(20rem, 80vw, 40rem)',
     });
     return firstValueFrom(dialogRef.afterClosed());
   }
